@@ -12,6 +12,7 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV
 import pickle
 
 nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
@@ -78,7 +79,14 @@ def build_model():
     ("clf", MultiOutputClassifier(AdaBoostClassifier()))
     ])
 
-    return pipeline
+    param_grid = {
+        'clf__estimator__n_estimators': [50, 100, 200],
+        'clf__estimator__learning_rate': [0.1, 1.0]
+    }
+
+    cv = GridSearchCV(pipeline, param_grid)
+
+    return cv
 
 
 
